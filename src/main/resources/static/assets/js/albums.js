@@ -16,7 +16,7 @@ function CurrencyController($scope,  $http, $log,$filter) {
 		
 		$http({
 			method : 'GET',
-			url : 'getComments'
+			url : 'getCommentsByUser/' + $scope.symbol
 		}).success(function(data, status) {
 			$scope.resultString = "<table class='table table-striped table-bordered'>";
 			$scope.parseData($scope.stocks,data );

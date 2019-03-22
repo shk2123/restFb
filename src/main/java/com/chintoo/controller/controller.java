@@ -36,8 +36,8 @@ public class controller {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUser")
-	public List<MyComments> getCommentsByUser(@RequestParam("name")String name)
+	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUser/{name}")
+	public List<MyComments> getCommentsByUser(@PathVariable String name)
 	{
 		return Service.getCommentsByUser(name);
 		
