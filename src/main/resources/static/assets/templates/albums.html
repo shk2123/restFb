@@ -1,0 +1,30 @@
+<div id="currencies" ng-init="init()">
+	<div class="page-header">
+		<h1>Stock Exchange Rates </h1>
+		 <input type="text" id="exampleInput" name="symbol" ng-model="symbol" placeholder="Symbol"
+       required />
+       <input type="button" ng-click="getStockQuote()" id="button-click" value="Get Rates "/> 
+		<div>
+			<!--  <span> [ view as: </span> <a href="" ng-click="setAlbumsView('grid')"><span
+				class="glyphicon glyphicon-th"></span></a> <a href=""
+				ng-click="setAlbumsView('list')"><span
+				class="glyphicon glyphicon-th-list"></span></a> <span> | sort by:
+			</span> <a href="" ng-click="sortField='code'">Currency Code</a> <a href=""
+				ng-click="sortField='name'">Currency</a> <a href=""
+				ng-click="sortDescending=!sortDescending"> <span
+				class="glyphicon"
+				ng-class="{'glyphicon-chevron-up' : !sortDescending, 'glyphicon-chevron-down' : sortDescending}"></span>
+			</a> -->
+		</div>
+	</div>
+
+	<div class="row">
+		<div ng-include src="'assets/templates/status.html'"></div>
+	</div>
+	<div class="row">
+		
+	</div>
+	<div class="row multi-columns-row">
+		<div ng-include src="albumsView"></div>
+	</div>
+</div>
