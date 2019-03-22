@@ -12,10 +12,18 @@ public class MyPost {
     
 	@Id
 	private String id;
-	
-	
 	@OneToMany
 	private List<MyComments> comments;
+	private long shares;
+
+	public long getShares() {
+		return shares;
+	}
+
+	public void setShares(long shares) {
+		this.shares = shares;
+	}
+	
 
 	public String getId() {
 		return id;

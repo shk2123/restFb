@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chintoo.entity.MyComments;
 import com.chintoo.entity.MyPost;
 import com.chintoo.service.service;
 
@@ -34,27 +35,20 @@ public class controller {
 
 	}
 	
-	/*@RequestMapping(method = RequestMethod.POST, value ="/saveComments")
-	public MyPost saveComments()
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUser")
+	public List<MyComments> getCommentsByUser(@RequestParam("name")String name)
 	{
+		return Service.getCommentsByUser(name);
 		
-		Service.saveComments();
-		return Service.getComments();
-
-	}*/
-
-	/*@RequestMapping(method = RequestMethod.GET, value ="/commentsString")
-	public ResponseEntity<String> getCommentsString()
-	{
-		return Service.getCommentsString();
-
 	}
-	@RequestMapping(method = RequestMethod.GET, value ="/getFromDB")
-	public Iterable<PostENtity> getCommentsString()
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/sendBulkMessage")
+	public String sendBulkMessages()
 	{
-		return Service.getFromDatabase();
-
-	}*/
+		return Service.sendBulkMessages();
+		
+	}
 	
 	
 }
