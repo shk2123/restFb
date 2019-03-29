@@ -50,5 +50,20 @@ public class controller {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value ="/getAccTokenProof")
+	public String getAccTokenProof()
+	{
+		return Service.getAppSecretProof();
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getAllData")
+	public List<MyComments> getAllData()
+	{
+		return Service.getAllData();
+		
+	}
+	
+	
 	
 }
