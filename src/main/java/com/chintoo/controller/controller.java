@@ -64,10 +64,10 @@ public class controller {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getAllLikes")
-	public ChintooPost getAllLikes()
+	@RequestMapping(method = RequestMethod.GET, value ="/getAllLikes/{postId}")
+	public ChintooPost getAllLikes(@PathVariable String postId)
 	{
-		return Service.getAllReactions();
+		return Service.getAllReactions(postId);
 		
 	}
 	

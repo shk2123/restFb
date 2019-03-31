@@ -172,11 +172,11 @@ public class service {
 	}
 		
 	
-	public ChintooPost getAllReactions()
+	public ChintooPost getAllReactions(String postId)
 	{
 		String generatedAccessToken = tokenGenerator();
 		FacebookClient client = new DefaultFacebookClient(generatedAccessToken, Version.VERSION_3_2);
-		Connection<ReactionItem> connectionReaction = client.fetchConnection(postUniqueId + "/reactions", ReactionItem.class);
+		Connection<ReactionItem> connectionReaction = client.fetchConnection(postId + "/reactions", ReactionItem.class);
 		//int personalLimit = 10000;
 		
 		List<MyReaction> myReactionList = new ArrayList<>();
