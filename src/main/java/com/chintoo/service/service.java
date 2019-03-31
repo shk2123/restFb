@@ -195,6 +195,7 @@ public class service {
 					myReaction.setUser(myUserRepository.save(myUser));
 				}
 				
+				myReaction.setName(item.getName());
 				myReaction.setType(item.getType());
 				myReactionList.add(myReaction);
 				myReactionRepsoitory.save(myReaction);
@@ -258,6 +259,16 @@ public class service {
 		return myCommentList;
 	}
 	
+	public ChintooPost getPostById(String Id)
+	{
+		return chintooPostRepository.findOne(Id);
+	}
+	
+	public List<MyReaction> getReactionByName(String name)
+	{
+		return myReactionRepsoitory.findByNameContainingIgnoreCase(name);
+	}
+	 
 	public String tokenGenerator()
 	{
 			AccessToken accessTokenGenerated =

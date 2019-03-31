@@ -71,6 +71,19 @@ public class controller {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value ="/getPostById/{Id}")
+	public ChintooPost getPostById(@PathVariable String Id)
+	{
+		return Service.getPostById(Id);
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getReactionByName/{name}")
+	public List<MyReaction> getReactionByName(@PathVariable String name)
+	{
+		return Service.getReactionByName(name);
+		
+	}
 	
 	
 }

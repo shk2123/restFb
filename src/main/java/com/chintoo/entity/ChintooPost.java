@@ -16,17 +16,20 @@ public class ChintooPost {
 	
 	@OneToMany
 	private List<MyComments> myComments;
+	
+	private String name;
 
 	public ChintooPost() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ChintooPost(String id, List<MyReaction> myReaction, List<MyComments> myComments) {
+	public ChintooPost(String id, List<MyReaction> myReaction, List<MyComments> myComments, String name) {
 		super();
 		Id = id;
 		this.myReaction = myReaction;
 		this.myComments = myComments;
+		this.name = name;
 	}
 
 	public String getId() {
@@ -53,6 +56,14 @@ public class ChintooPost {
 		this.myComments = myComments;
 	}
 
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
 	
 }

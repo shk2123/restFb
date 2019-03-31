@@ -15,7 +15,22 @@ public class MyReaction {
 	@OneToOne
 	MyUser user;
 	
+	private String name;
+
 	private String type;
+
+	public MyReaction() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public MyReaction(String reactionId, MyUser user, String name, String type) {
+		super();
+		ReactionId = reactionId;
+		this.user = user;
+		this.name = name;
+		this.type = type;
+	}
 
 	public String getReactionId() {
 		return ReactionId;
@@ -33,6 +48,14 @@ public class MyReaction {
 		this.user = user;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -41,16 +64,5 @@ public class MyReaction {
 		this.type = type;
 	}
 
-	public MyReaction(String reactionId, MyUser user, String type) {
-		super();
-		ReactionId = reactionId;
-		this.user = user;
-		this.type = type;
-	}
-
-	public MyReaction() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 }
