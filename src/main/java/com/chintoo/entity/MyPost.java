@@ -16,7 +16,7 @@ public class MyPost {
 	@OneToMany
 	private List<MyComments> comments;
 	private long shares;
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany(fetch=FetchType.EAGER)
 	private List<MyLike> likes;
 	
 	

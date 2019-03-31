@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chintoo.entity.ChintooPost;
 import com.chintoo.entity.MyComments;
 import com.chintoo.entity.MyLike;
 import com.chintoo.entity.MyPost;
 import com.chintoo.entity.MyReaction;
+import com.chintoo.service.AccessTokenGenerator;
 import com.chintoo.service.service;
 
 @RestController
@@ -22,6 +24,9 @@ public class controller {
 	
 	@Autowired
 	public service Service;
+	
+	@Autowired
+	public AccessTokenGenerator accessTokenGenerator; 
 
 	@RequestMapping(method = RequestMethod.GET, value ="/getComments")
 	public MyPost getComments()
@@ -44,18 +49,11 @@ public class controller {
 		return Service.getCommentsByUser(name);
 		
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value ="/sendBulkMessage")
-	public String sendBulkMessages()
-	{
-		return Service.sendBulkMessages();
 		
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value ="/getAccTokenProof")
-	public String getAccTokenProof()
+	@RequestMapping(method = RequestMethod.GET, value ="/getAccToken")
+	public String getAccToken()
 	{
-		return Service.getAppSecretProof();
+		return Service.tokenGenerator();
 		
 	}
 	
@@ -67,7 +65,7 @@ public class controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getAllLikes")
-	public List<MyReaction> getAllLikes()
+	public ChintooPost getAllLikes()
 	{
 		return Service.getAllReactions();
 		

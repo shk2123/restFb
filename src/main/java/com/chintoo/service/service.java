@@ -15,11 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.chintoo.dao.ChintooPostRepository;
 import com.chintoo.dao.MyCommentsInterface;
 import com.chintoo.dao.MyLikeRepository;
 import com.chintoo.dao.MyPostInterface;
 import com.chintoo.dao.MyReactionRepository;
 import com.chintoo.dao.MyUserRepository;
+import com.chintoo.entity.ChintooPost;
 import com.chintoo.entity.MyComments;
 import com.chintoo.entity.MyLike;
 import com.chintoo.entity.MyPost;
@@ -63,10 +65,17 @@ public class service {
 	@Autowired
 	private MyReactionRepository myReactionRepsoitory;
 	
+	@Autowired
+	private ChintooPostRepository chintooPostRepository;
+	
 	@Value("${fb.accessToken}")
 	private String accessToken;
 	@Value("${fb.postUniqueId}")
 	private String postUniqueId;
+	@Value("${fb.myAppId}")
+	private String myAppId;
+	@Value("${fb.myAppSecret}")
+	private String myAppSecret;
 
 	public MyPost getComments()
 
@@ -161,61 +170,12 @@ public class service {
 	public List<MyComments> getCommentsByUser(String name) {
 		return myCommentsInterface.findByNameContainingIgnoreCase(name);
 	}
-	
-	public ResponseEntity<String> getCommentsString(){
-
-		RestTemplate rest = new RestTemplate();
-
-		return rest.getForEntity("https://graph.facebook.com/v3.2/1249356698415581_2696900666994503/?fields=shares,comments&access_token=EAAJTHrZCGdd4BANFKBObOIxhth5Lap3NupZCAeyJgjPAL96lc8jn1fVyu7Dznytie0dZCI8FE6rqbbqrMdUFD0eZBRwjtTmA9JS2ITgjy5znopDhwZCTL4XZC7C928em8YhzRz9Grb75gdZAGxFaJJkBqIH9oif7SwtPma73De2mFZBdzfFfg8snwfKV1avm1kAZD", String.class);
-
-	}
-	
-	public String sendBulkMessages()
-	{
-		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
-		GraphResponse publishMessageResponse = client.publish("me/feed", GraphResponse.class, Parameter.with("message","restfbtest"));
-		return publishMessageResponse.getId();
-	}
-	
-	public String getAppSecretProof()
-	{
-		String proof = new DefaultFacebookClient(Version.LATEST).obtainAppSecretProof(accessToken, "d2868eb969bfb7bcd6647a483d262306");
-		return proof;
-	}
-	
-	public List<MyLike> getAllLikes()
-	{
-		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
-		Connection<LikeItem> connectionLikes = client.fetchConnection(postUniqueId + "/likes", LikeItem.class);
-		//int personalLimit = 10000;
 		
-		List<MyLike> myLikeList = new ArrayList<>();
-		for(List<LikeItem> likeItems : connectionLikes){
-			for(LikeItem item : likeItems){
-				System.out.println("Id:" + item.getId());
-				MyLike myLike = new MyLike();
-				MyUser myUser = null;
-					myUser = myUserRepository.findOne(item.getId());
-				if(null != myUser){
-					myLike.setUser(myUser);
-				}else {
-					myUser = new MyUser();
-					myUser.setId(item.getId());
-					myUser.setName(item.getName());
-					myLike.setUser(myUserRepository.save(myUser));
-				}
-				
-				myLikeRepository.save(myLike);
-				myLikeList.add(myLike);
-			}
-		}
-		return myLikeList;
-		
-	}
 	
-	public List<MyReaction> getAllReactions()
+	public ChintooPost getAllReactions()
 	{
-		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
+		String generatedAccessToken = tokenGenerator();
+		FacebookClient client = new DefaultFacebookClient(generatedAccessToken, Version.VERSION_3_2);
 		Connection<ReactionItem> connectionReaction = client.fetchConnection(postUniqueId + "/reactions", ReactionItem.class);
 		//int personalLimit = 10000;
 		
@@ -240,7 +200,13 @@ public class service {
 				myReactionRepsoitory.save(myReaction);
 			}
 		}
-		return myReactionList;
+		
+		ChintooPost chintooPost = new ChintooPost();
+		//chintooPost.setMyComments(getAllData());
+		chintooPost.setId(postUniqueId);
+		chintooPost.setMyReaction(myReactionList);
+		chintooPostRepository.save(chintooPost);
+		return chintooPost;
 		
 	}
 	
@@ -248,9 +214,8 @@ public class service {
 
 	{		
 		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
-		Post post = client.fetchObject(postUniqueId,Post.class,Parameter.with("fields", "comments{from,message,message_tags},likes,shares"));
 		Connection<Comment> connectionComment = client.fetchConnection(postUniqueId + "/comments", Comment.class, Parameter.with("limit", 10));
-		int personalLimit = 10000;
+		
 		List<MyComments> myCommentList = new ArrayList<>();  //navin list
 		for(List<Comment> commentPage : connectionComment ){
 			for (Comment comment : commentPage) {
@@ -286,23 +251,23 @@ public class service {
 				
 				myComment.setMessageTags((List<MyUser>)myUserRepository.save(myUserTags));
 				myCommentList.add(myComment);
-				personalLimit --;
-
-				if (personalLimit == 0) {
-				       
-				    }
-
+				myCommentsInterface.save(myCommentList);
 			}
 		}
 		
-		MyPost myPost = new MyPost();
-		myPost.setId(post.getId());
-		myPost.setComments((List<MyComments>)myCommentsInterface.save(myCommentList));
-		//myPost.setLikes(myLikes);
-		myPost.setShares(post.getSharesCount());
-		
-		myPostInterface.save(myPost);
 		return myCommentList;
+	}
+	
+	public String tokenGenerator()
+	{
+			AccessToken accessTokenGenerated =
+					  new DefaultFacebookClient(Version.LATEST).obtainExtendedAccessToken(myAppId,
+							  myAppSecret, accessToken);
+					System.out.println("My extended access token: " + accessTokenGenerated);
+					String delims = "[=\\s+]";
+					String[] parser = accessTokenGenerated.toString().split(delims);
+					String parsedAccessToken = parser[1];
+					return parsedAccessToken;
 		
 	}
 	
