@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chintoo.entity.MyComments;
+import com.chintoo.entity.MyLike;
 import com.chintoo.entity.MyPost;
+import com.chintoo.entity.MyReaction;
 import com.chintoo.service.service;
 
 @RestController
@@ -36,8 +38,8 @@ public class controller {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUser")
-	public List<MyComments> getCommentsByUser(@RequestParam("name")String name)
+	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUser/{name}")
+	public List<MyComments> getCommentsByUser(@PathVariable String name)
 	{
 		return Service.getCommentsByUser(name);
 		
@@ -49,6 +51,28 @@ public class controller {
 		return Service.sendBulkMessages();
 		
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getAccTokenProof")
+	public String getAccTokenProof()
+	{
+		return Service.getAppSecretProof();
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getAllData")
+	public List<MyComments> getAllData()
+	{
+		return Service.getAllData();
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getAllLikes")
+	public List<MyReaction> getAllLikes()
+	{
+		return Service.getAllReactions();
+		
+	}
+	
 	
 	
 }

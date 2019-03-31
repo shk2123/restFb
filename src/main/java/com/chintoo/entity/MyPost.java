@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -15,6 +16,31 @@ public class MyPost {
 	@OneToMany
 	private List<MyComments> comments;
 	private long shares;
+	@OneToMany(fetch=FetchType.LAZY)
+	private List<MyLike> likes;
+	
+	
+
+	public MyPost() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public MyPost(String id, List<MyComments> comments, long shares, List<MyLike> likes) {
+		super();
+		this.id = id;
+		this.comments = comments;
+		this.shares = shares;
+		this.likes = likes;
+	}
+
+	public List<MyLike> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<MyLike> likes) {
+		this.likes = likes;
+	}
 
 	public long getShares() {
 		return shares;
