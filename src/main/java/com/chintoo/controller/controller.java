@@ -86,7 +86,7 @@ public class controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getLikesByUserAcrossPost/{myReactionName}")
-	public List<ChintooPost> getReactionByNameAcrossPost(@PathVariable String myReactionName)
+	public Boolean getReactionByNameAcrossPost(@PathVariable String myReactionName)
 	{
 		return Service.getReactionByNameAcrossPost(myReactionName);
 		

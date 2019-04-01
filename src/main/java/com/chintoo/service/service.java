@@ -270,20 +270,11 @@ public class service {
 	}
 	
 	
-	public List<ChintooPost> getReactionByNameAcrossPost(String myReactionName)
+	public Boolean getReactionByNameAcrossPost(String myReactionName)
 	{
-		
-	   List<ChintooPost> chintooPosts = chintooPostRepository.findByMyReactionName(myReactionName);
-	   List<ChintooPost> myChintooPostList = new ArrayList<>();
-	   
-	  for (ChintooPost chintooPost : chintooPosts)
-	   {
-		   ChintooPost post = new ChintooPost();
-		   post.setId(chintooPost.getId());
-		   post.setName(myReactionName);
-	   }
-	   
-	return myChintooPostList; 
+		Boolean likExists = new Boolean(false);
+		if (chintooPostRepository.findByMyReactionName(myReactionName) != null) {return likExists = true;}
+		else {return likExists = false;}
 	}
 	 
 	public String tokenGenerator()
