@@ -268,6 +268,23 @@ public class service {
 	{
 		return myReactionRepsoitory.findByNameContainingIgnoreCase(name);
 	}
+	
+	
+	public List<ChintooPost> getReactionByNameAcrossPost(String myReactionName)
+	{
+		
+	   List<ChintooPost> chintooPosts = chintooPostRepository.findByMyReactionName(myReactionName);
+	   List<ChintooPost> myChintooPostList = new ArrayList<>();
+	   
+	  for (ChintooPost chintooPost : chintooPosts)
+	   {
+		   ChintooPost post = new ChintooPost();
+		   post.setId(chintooPost.getId());
+		   post.setName(myReactionName);
+	   }
+	   
+	return myChintooPostList; 
+	}
 	 
 	public String tokenGenerator()
 	{
