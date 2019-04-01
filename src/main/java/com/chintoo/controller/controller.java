@@ -86,9 +86,9 @@ public class controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getLikesByUserAcrossPost/{myReactionName}")
-	public Boolean getReactionByNameAcrossPost(@PathVariable String myReactionName)
+	public String getReactsionByNameAcrossPosts(@PathVariable String myReactionName)
 	{
-		return Service.getReactionByNameAcrossPost(myReactionName);
+		return Service.getReactsionByNameAcrossPosts(myReactionName);
 		
 	}
 	
