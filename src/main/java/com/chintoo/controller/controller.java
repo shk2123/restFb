@@ -58,7 +58,7 @@ public class controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getAllData")
-	public List<MyComments> getAllData()
+	public ChintooPost getAllData()
 	{
 		return Service.getAllData();
 		
@@ -86,9 +86,9 @@ public class controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getLikesByUserAcrossPost/{myReactionName}")
-	public String getReactsionByNameAcrossPosts(@PathVariable String myReactionName)
+	public List<ChintooPost> getReactsionByNameAcrossPosts(@PathVariable String myReactionName)
 	{
-		return Service.getReactsionByNameAcrossPosts(myReactionName);
+		return Service.getReactionByNameAcrossPost(myReactionName);
 		
 	}
 	
