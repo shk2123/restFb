@@ -1,4 +1,17 @@
 <div class="col-xs-12" id="table-div">
 	  
-	
+	 <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Post Id</th>
+           
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="post in myPosts">
+            <td>
+                {{mySplit(post.id,1)}}
+            </td>
+        </tr>
+        </tbody>
 </div>

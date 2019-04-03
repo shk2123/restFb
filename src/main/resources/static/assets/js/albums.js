@@ -1,9 +1,8 @@
 angular.module('currencies', [ 'ui.bootstrap' ])
 	
 function CurrencyController($scope,  $http, $log,$filter) {
-	$scope.stocks = [];
-	$scope.rates = [];
 
+	/*$scope.myPosts = [{ "id": 2128495817206205}, {"id": 2161100163945770 }, {"id":  2128494830539637 }, {"id":  2161098220612631} ,{"id":   2128493807206406 }];*/
 	
 	
 
@@ -11,17 +10,56 @@ function CurrencyController($scope,  $http, $log,$filter) {
 		return JSON.parse(JSON.stringify(obj));
 	}
 
-	$scope.getStockQuote = function () {
-		$scope.resultString = "";
+	
+
+	$scope.setAlbumsView = function(viewName) {
+		$scope.albumsView = "assets/templates/" + viewName + ".html";
+		$scope.listView = "assets/templates/list.html";
+	};
+
+	$scope.init = function() {
+		
+		
+
+		$http({
+			method : 'GET',
+			url : 'posts'
+		}).success(function(data, status) {
+			$scope.posts = data;
+			
+			console.log($scope.posts);
+
+		}).error(function(data, status, headers, config) {
+			$log.warn(status);
+			alert(data);
+		});
+		
+		$scope.setAlbumsView("grid");
+		//$scope.sortField = "code";
+		//$scope.sortDescending = false;
+		
+		
+		
+		
+	};
+	
+	
+	$scope.mySplit = function(string, nb) {
+	    var array = string.split('_');
+	    return array[nb];
+	}
+	
+	
+	
+	$scope.getLikedPostsByName = function () {
+		
 		
 		$http({
 			method : 'GET',
-			url : 'getCommentsByUser/' + $scope.symbol
+			url : 'getLikesByUserAcrossPost/' + $scope.userName
 		}).success(function(data, status) {
-			$scope.resultString = "<table class='table table-striped table-bordered'>";
-			$scope.parseData($scope.stocks,data );
-			$scope.loadData();
-
+			$scope.myPosts = data;
+			
 		}).error(function(data, status, headers, config) {
 			$log.warn(status);
 			alert(data);
@@ -29,54 +67,5 @@ function CurrencyController($scope,  $http, $log,$filter) {
 		
 
 	}
-
-	$scope.setAlbumsView = function(viewName) {
-		$scope.albumsView = "assets/templates/" + viewName + ".html";
-	};
-
-	$scope.init = function() {
-		
-		$scope.setAlbumsView("list");
-		$scope.sortField = "code";
-		$scope.sortDescending = false;
-	};
-	
-	$scope.resultString = "";
-	$scope.parseData = function (array,data){
-	
-		for ( var key in data) {
-			var obj = {};
-			obj.code = key;
-			$scope.resultString += "<tr><td>" + key + "</td>";
-			obj.data = [];
-			//obj.data = data[key];
-			if(typeof data[key] == "string")
-	        {
-				$scope.resultString += "<td>" + data[key]; + "</td></tr>";
-				obj.data = data[key];
-	        }
-	        else if(typeof data[key] == "object")
-	        {
-	        	$scope.resultString += "<td><table class='table table-striped table-bordered'>";
-	        	var tempData = data[key];
-	        	$scope.parseData(obj.data,tempData);
-	        	$scope.resultString += "</table></td></tr>";
-	        }
-			//return obj;
-			array .push(obj);
-		}
-		
-	
-	}
-	
-	
-	
-	$scope.loadData= function (){
-		console.log($scope.resultString);
-		$scope.resultString += "</table>"
-		$("#table-div").html( $scope.resultString );
-	}
-	
-	
 	
 }

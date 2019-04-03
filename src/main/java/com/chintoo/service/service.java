@@ -19,6 +19,13 @@ import com.chintoo.entity.MyLike;
 import com.chintoo.entity.MyPost;
 import com.chintoo.entity.MyReaction;
 import com.chintoo.entity.MyUser;
+import com.instamojo.wrapper.api.ApiContext;
+import com.instamojo.wrapper.api.Instamojo;
+import com.instamojo.wrapper.api.InstamojoImpl;
+import com.instamojo.wrapper.exception.ConnectionException;
+import com.instamojo.wrapper.exception.HTTPException;
+import com.instamojo.wrapper.model.PaymentOrder;
+import com.instamojo.wrapper.model.PaymentOrderResponse;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -149,8 +156,8 @@ public class service {
 
 	}
 
-	public Iterable<MyPost> getPostsFromDb() {
-		return myPostInterface.findAll();
+	public Iterable<ChintooPost> getPostsFromDb() {
+		return chintooPostRepository.findAll();
 	}
 
 	public List<MyComments> getCommentsByUser(String name) {
@@ -169,37 +176,28 @@ public class service {
 		for (List<ReactionItem> reactionItems : connectionReaction) {
 			for (ReactionItem item : reactionItems) {
 
-				MyReaction myReaction = myReactionRepsoitory.findOne(item.getId());
-				System.out.println(myReaction + " Id = " + item.getId());
+				String reactionId = postId + "_" + item.getId();
+				
+				MyReaction myReaction = myReactionRepsoitory.findOne(reactionId);
+				System.out.println(myReaction + " Id = " + reactionId);
 				if (null == myReaction){
-					
+
 					myReaction = new MyReaction();
-					myReaction.setReactionId(item.getId());
+					myReaction.setReactionId(reactionId);
 					myReaction.setName(item.getName());
 					myReaction.setType(item.getType());
-					
-					MyUser myUser = null;
-					myUser = myUserRepository.findOne(item.getId());
-					if (null != myUser) {
-						myReaction.setUser(myUser);
-					} else {
+
+					MyUser myUser = myUserRepository.findOne(item.getId());
+					if (null == myUser) {
 						myUser = new MyUser();
 						myUser.setId(item.getId());
 						myUser.setName(item.getName());
 						myReaction.setUser(myUserRepository.save(myUser));
-					}
+					} 
 					myReactionList.add(myReactionRepsoitory.save(myReaction));
 				}
 			}
 		}	
-
-		ChintooPost chintooPost = chintooPostRepository.findOne(postUniqueId);
-		if (null == chintooPost) {
-			chintooPost = new ChintooPost();
-			chintooPost.setId(postUniqueId);
-		}
-
-		chintooPost.setMyReaction(myReactionList);
 
 		if (null == chPost){
 			chPost = new ChintooPost();
@@ -288,21 +286,6 @@ public class service {
 		return chintooPostRepository.findByMyReactionName(myReactionName);
 	}
 
-	public String getReactsionByNameAcrossPosts(String myReactionName) {
-		Iterable<ChintooPost> iterableChintoo = chintooPostRepository.findAll();
-		String liked = null;
-		for (ChintooPost chintooPost : iterableChintoo) {
-			if (chintooPost.getId() != null) {
-				liked = "true";
-			} else {
-				liked = "false";
-			}
-
-		}
-
-		return liked;
-	}
-
 	public String tokenGenerator() {
 		String parsedAccessToken = accessToken;
 
@@ -331,5 +314,18 @@ public class service {
 	public void setGeneratedAcessToken(String generatedAcessToken) {
 		this.generatedAcessToken = generatedAcessToken;
 	}
+
+	public ChintooPost savePost(String postId) {
+		// TODO Auto-generated method stub
+		
+		
+		ChintooPost post = chintooPostRepository.findOne(postId);
+		if(null == post){
+			post = new ChintooPost();
+			post.setId(postId);
+		}
+		return chintooPostRepository.save(post);
+	}
+
 
 }

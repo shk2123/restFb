@@ -36,7 +36,7 @@ public class controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/posts")
-	public Iterable<MyPost> getPosts()
+	public Iterable<ChintooPost> getPosts()
 	{
 		return Service.getPostsFromDb();
 
@@ -71,6 +71,14 @@ public class controller {
 		
 	}
 	
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/savePost/{postId}")
+	public ChintooPost savePost(@PathVariable String postId)
+	{
+		return Service.savePost(postId);
+		
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value ="/getPostById/{Id}")
 	public ChintooPost getPostById(@PathVariable String Id)
 	{
@@ -90,7 +98,7 @@ public class controller {
 	{
 		return Service.getReactionByNameAcrossPost(myReactionName);
 		
-	}
+	}		
 	
 	
 }

@@ -1,15 +1,13 @@
 package com.chintoo.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class MyReaction {
 	
-	@Id@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
 	private String ReactionId;
 	
 	@OneToOne
