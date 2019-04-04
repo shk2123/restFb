@@ -206,10 +206,11 @@ public class service {
 	}
 
 	public ChintooPost getAllData(String postId) {
+		//getAllReactions(postId);
 		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
 		Connection<Comment> connectionComment = client.fetchConnection(postId + "/comments", Comment.class,
-				Parameter.with("limit", 10));
-		ChintooPost chPost = chintooPostRepository.findOne(postUniqueId);
+				Parameter.with("limit", 10),Parameter.with("fields", "message_tags,from,id,message"));
+		ChintooPost chPost = chintooPostRepository.findOne(postId);
 
 		List<MyComments> myCommentList = new ArrayList<>(); // navin list
 
@@ -218,7 +219,7 @@ public class service {
 			for (Comment comment : commentPage) {
 
 				MyComments myComment = myCommentsInterface.findOne(comment.getId());
-				System.out.println(myComment + " Id = " + comment.getId());
+				
 				if (null == myComment) {
 					myComment = new MyComments();
 					myComment.setId(comment.getId());
@@ -235,6 +236,7 @@ public class service {
 					myComment.setFrom(myUserFrom);
 					myComment.setName(fromUser.getName());
 					myComment.setMessage(comment.getMessage());
+					
 					List<MessageTag> msgTags = comment.getMessageTags();
 					List<MyUser> myUserTags = new ArrayList<>();
 
@@ -243,12 +245,15 @@ public class service {
 						if (null == myUserTag) {
 							myUserTag = new MyUser();
 							myUserTag.setId(messageTag.getId());
+							myUserTag.setName(messageTag.getName());
+							myUserTag = myUserRepository.save(myUserTag);
+							myUserTags.add(myUserTag);
 						}
-						myUserTag.setName(messageTag.getName());
-						myUserTags.add(myUserTag);
+						
 					}
+					
 
-					myComment.setMessageTags((List<MyUser>) myUserRepository.save(myUserTags));
+					myComment.setMessageTags(myUserTags);
 					myCommentList.add(myCommentsInterface.save(myComment));
 				}
 			}
@@ -285,11 +290,12 @@ public class service {
 	}
 
 
-	public ChintooPost savePost(String postId) {
+	public ChintooPost savePost(String postId, String postName) {
 		ChintooPost post = chintooPostRepository.findOne(postId);
 		if(null == post){
 			post = new ChintooPost();
 			post.setId(postId);
+			post.setName(postName);	
 		}
 		return chintooPostRepository.save(post);
 	}

@@ -6,18 +6,18 @@
 		<div ng-include src="albumsView"></div>
 	</div>
 	
- 
- <input type="text" id="exampleInput" name="userName" ng-model="userName" placeholder="Please enter your facebook name"
+ <div class="w3-section">
+ <input type="text"  class="w3-input w3-border" id="exampleInput" name="userName" ng-model="userName" placeholder="Please enter your facebook name"
        required />
        
-        <input type="button" ng-click="getLikedPostsByName()" id="button-click" value="Get My Liked Posts "/> 
+        <input type="button" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" ng-click="getLikedPostsByName()" id="button-click" value="Get My Liked Posts "/> 
         
-         <input type="text" id="exampleInput" name="userNameC" ng-model="userNameC" placeholder="Please enter your facebook name"
+         <input type="text" class="w3-input w3-border" id="exampleInput" name="userNameC" ng-model="userNameC" placeholder="Please enter your facebook name"
        required />
        
-        <input type="button" ng-click="getCommentsPostsByName()" id="button-click" value="Get My Commented Posts "/> 
+        <input type="button" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" ng-click="getCommentsPostsByName()" id="button-click" value="Get My Commented Posts "/> 
         
-
+</div>
 <div class="row ">
 		<div ng-include src="listView"></div>
 	</div>

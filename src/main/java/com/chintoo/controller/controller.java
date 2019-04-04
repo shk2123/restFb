@@ -59,14 +59,14 @@ public class controller {
 	 * }
 	 */
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getAllData/{postId}")
-	public ChintooPost getAllData(@PathVariable String postId)
+	@RequestMapping(method = RequestMethod.PUT, value ="/getAllComments/{postId}")
+	public ChintooPost getAllComments(@PathVariable String postId)
 	{
 		return Service.getAllData(postId);
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getAllLikes/{postId}")
+	@RequestMapping(method = RequestMethod.PUT, value ="/getAllLikes/{postId}")
 	public ChintooPost getAllLikes(@PathVariable String postId)
 	{
 		return Service.getAllReactions(postId);
@@ -74,10 +74,10 @@ public class controller {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/savePost/{postId}")
-	public ChintooPost savePost(@PathVariable String postId)
+	@RequestMapping(method = RequestMethod.PUT, value ="/savePost/{postId},{postName}")
+	public ChintooPost savePost(@PathVariable String postId, @PathVariable String postName)
 	{
-		return Service.savePost(postId);
+		return Service.savePost(postId, postName);
 		
 	}
 	

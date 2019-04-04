@@ -7,6 +7,50 @@
 <meta name="title" content="Currency Rate">
 <link rel="shortcut icon" href="assets/favicon.ico">
 <title>Facebook Marketing</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Poppins">
+<style>
+body, h1, h2, h3, h4, h5 {
+	font-family: "Poppins", sans-serif
+}
+
+body {
+	font-size: 16px;
+}
+
+.w3-half img {
+	margin-bottom: -6px;
+	margin-top: 16px;
+	opacity: 0.8;
+	cursor: pointer
+}
+
+.w3-half img:hover {
+	opacity: 1
+}
+</style>
+
+
+
+
+
+<!-- Top menu on small screens -->
+<header
+	class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+	<a href="javascript:void(0)" class="w3-button w3-red w3-margin-right"
+		onclick="w3_open()">☰</a> <span>Chintoo</span>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()"
+	style="cursor: pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
 
 <link rel="stylesheet" type="text/css"
 	href="webjars/bootstrap/3.1.1/css/bootstrap.css">
@@ -17,32 +61,91 @@
 </head>
 
 <body>
+
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous"
 		src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&autoLogAppEvents=1&version=v3.2&appId=2264590680271985"></script>
-	<div class="container">
-		<div class="row">
-			<div ng-include="'assets/templates/header.html'"></div>
+	<!-- Sidebar/menu -->
+	<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding"
+		style="z-index: 3; width: 300px; font-weight: bold;" id="mySidebar">
+		<br> <a href="javascript:void(0)" onclick="w3_close()"
+			class="w3-button w3-hide-large w3-display-topleft"
+			style="width: 100%; font-size: 22px">Close Menu</a>
+		<div class="w3-bar-block">
+			<a href="http://chintoo.com/" onclick="w3_close()"
+				class="w3-bar-item w3-button w3-hover-white">Home</a> <a
+				href="http://chintoo.com/about/" onclick="w3_close()"
+				class="w3-bar-item w3-button w3-hover-white">About Us</a> <a
+				href="http://chintoo.com/contact/" onclick="w3_close()"
+				class="w3-bar-item w3-button w3-hover-white">Contact</a> <a
+				href="https://www.facebook.com/pg/OfficialChintooPage/reviews/?ref=page_internal"
+				onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Visit
+				us on Facebook</a> <a
+				href="https://www.youtube.com/channel/UCv7iSimxmUSVx2qYutHCGJQ"
+				onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Visit
+				us on YouTube</a>
+
 
 		</div>
 
-		<div id="body" class="row">
-			<div class="row">
-
-				<ng-view></ng-view>
-			</div>
-
-<a href="https://www.instamojo.com/@shubhankark/lf1f021105ac94f05bb7f5ba914d97928/" rel="im-checkout" data-behaviour="remote" data-style="light" data-text="Pay and place order"></a>
-<script src="https://js.instamojo.com/v1/button.js"></script>
-	
-			<div class="row">
-				<div ng-include="'assets/templates/footer.html'"></div>
+	</nav>
+	<div class="container" style="margin-left: 20%;">
+		<div class="w3-display-container" style="margin-bottom: 50px">
+			<img src="assets/img/chintoo.jpg" style="width: 100%">
+			<div
+				class="w3-display-bottomright w3-container w3-amber w3-hover-orange w3-hide-small"
+				style="bottom: 10%; opacity: 0.7; width: 40%">
+				<h2 style="font-family: Comic Sans MS;">
+					<b>Celebrate this Summer like never before<br>with Chintoo
+					</b>
+				</h2>
 			</div>
 		</div>
+		<div class="w3-main">
+			<!-- Header -->
+			<div class="w3-container" id="showcase">
+				<h1 class="w3-jumbo w3-text-red" style="font-family: Comic Sans MS;">
+					<b>Chintoo</b>
+				</h1>
+				<hr style="width: 50px; border: 5px solid red" class="w3-round">
+				<h1 class="w3-xxlarge w3-text-black"
+					style="font-family: Comic Sans MS;">
+					<b>Offers are discounts you can share with your customers on
+						Facebook to encourage people to shop on your website, at your
+						physical store, or both.Keep in mind you can't edit or delete an
+						offer after you create it.</b>
+				</h1>
+			</div>
 
+
+			<div id="body" class="row">
+				<div class="row" style="margin-left: 3%; margin-top: 5%;">
+					<ng-view></ng-view>
+				</div>
+
+				<!-- <div class="row" style=" margin-left: 25%;">
+					<div ng-include="'assets/templates/footer.html'"></div>
+				</div> -->
+			</div>
+
+			<div class="w3-container" id="payment" style="margin-top: 75px">
+				<h1 class="w3-xxlarge w3-text-red"
+					style="font-family: Comic Sans MS;">
+					<b>Payment.</b>
+				</h1>
+				<hr style="width: 50px; border: 5px solid red" class="w3-round">
+
+				<a
+					href="https://www.instamojo.com/@shubhankark/lf1f021105ac94f05bb7f5ba914d97928/"
+					rel="im-checkout" data-behaviour="remote" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" data-style="flat"
+					data-text="Pay Here"></a>
+				<script src="https://js.instamojo.com/v1/button.js"></script>
+
+
+				<!-- End page content -->
+			</div>
+		</div>
 	</div>
-
-
 	<script type="text/javascript" src="webjars/jquery/2.1.0/jquery.min.js"></script>
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -69,3 +172,4 @@
 	<script type="text/javascript" src="assets/js/status.js"></script>
 </body>
 </html>
+
