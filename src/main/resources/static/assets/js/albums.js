@@ -68,4 +68,21 @@ function CurrencyController($scope,  $http, $log,$filter) {
 
 	}
 	
+	$scope.getCommentsPostsByName = function () {
+		
+		
+		$http({
+			method : 'GET',
+			url : 'getCommentsByUserAcrossPost/' + $scope.userNameC
+		}).success(function(data, status) {
+			$scope.myPosts = data;
+			
+		}).error(function(data, status, headers, config) {
+			$log.warn(status);
+			alert(data);
+		});
+		
+
+	}
+	
 }

@@ -11,6 +11,12 @@
        required />
        
         <input type="button" ng-click="getLikedPostsByName()" id="button-click" value="Get My Liked Posts "/> 
+        
+         <input type="text" id="exampleInput" name="userNameC" ng-model="userNameC" placeholder="Please enter your facebook name"
+       required />
+       
+        <input type="button" ng-click="getCommentsPostsByName()" id="button-click" value="Get My Commented Posts "/> 
+        
 
 <div class="row ">
 		<div ng-include src="listView"></div>

@@ -12,5 +12,6 @@ public interface ChintooPostRepository extends CrudRepository<ChintooPost, Strin
 	//List<ChintooPost> findByMyReactionByName(String name);
 
 	List<ChintooPost> findByMyReactionName(String myReactionName);
+	List<ChintooPost> findByMyCommentsName(String myReactionName);
 
 }

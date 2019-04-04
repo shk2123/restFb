@@ -28,12 +28,12 @@ public class controller {
 	@Autowired
 	public AccessTokenGenerator accessTokenGenerator; 
 
-	@RequestMapping(method = RequestMethod.GET, value ="/getComments")
-	public MyPost getComments()
-	{
-		return Service.getComments();
-
-	}
+	/*
+	 * @RequestMapping(method = RequestMethod.GET, value ="/getComments") public
+	 * MyPost getComments() { return Service.getComments();
+	 * 
+	 * }
+	 */
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/posts")
 	public Iterable<ChintooPost> getPosts()
@@ -43,24 +43,26 @@ public class controller {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUser/{name}")
-	public List<MyComments> getCommentsByUser(@PathVariable String name)
-	{
-		return Service.getCommentsByUser(name);
+	/*
+	 * @RequestMapping(method = RequestMethod.GET, value
+	 * ="/getCommentsByUser/{name}") public List<MyComments>
+	 * getCommentsByUser(@PathVariable String name) { return
+	 * Service.getCommentsByUser(name);
+	 * 
+	 * }
+	 */
 		
-	}
-		
-	@RequestMapping(method = RequestMethod.GET, value ="/getAccToken")
-	public String getAccToken()
-	{
-		return Service.tokenGenerator();
-		
-	}
+	/*
+	 * @RequestMapping(method = RequestMethod.GET, value ="/getAccToken") public
+	 * String getAccToken() { return Service.tokenGenerator();
+	 * 
+	 * }
+	 */
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getAllData")
-	public ChintooPost getAllData()
+	@RequestMapping(method = RequestMethod.GET, value ="/getAllData/{postId}")
+	public ChintooPost getAllData(@PathVariable String postId)
 	{
-		return Service.getAllData();
+		return Service.getAllData(postId);
 		
 	}
 	
@@ -86,19 +88,28 @@ public class controller {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getReactionByName/{name}")
-	public List<MyReaction> getReactionByName(@PathVariable String name)
-	{
-		return Service.getReactionByName(name);
-		
-	}
+	/*
+	 * @RequestMapping(method = RequestMethod.GET, value
+	 * ="/getReactionByName/{name}") public List<MyReaction>
+	 * getReactionByName(@PathVariable String name) { return
+	 * Service.getReactionByName(name);
+	 * 
+	 * }
+	 */
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getLikesByUserAcrossPost/{myReactionName}")
 	public List<ChintooPost> getReactsionByNameAcrossPosts(@PathVariable String myReactionName)
 	{
 		return Service.getReactionByNameAcrossPost(myReactionName);
 		
-	}		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUserAcrossPost/{myReactionName}")
+	public List<ChintooPost> getCommentsByNameAcrossPosts(@PathVariable String myReactionName)
+	{
+		return Service.getCommentsByNameAcrossPost(myReactionName);
+		
+	}
 	
 	
 }

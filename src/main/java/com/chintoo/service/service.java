@@ -19,13 +19,7 @@ import com.chintoo.entity.MyLike;
 import com.chintoo.entity.MyPost;
 import com.chintoo.entity.MyReaction;
 import com.chintoo.entity.MyUser;
-import com.instamojo.wrapper.api.ApiContext;
-import com.instamojo.wrapper.api.Instamojo;
-import com.instamojo.wrapper.api.InstamojoImpl;
-import com.instamojo.wrapper.exception.ConnectionException;
-import com.instamojo.wrapper.exception.HTTPException;
-import com.instamojo.wrapper.model.PaymentOrder;
-import com.instamojo.wrapper.model.PaymentOrderResponse;
+
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -211,9 +205,9 @@ public class service {
 
 	}
 
-	public ChintooPost getAllData() {
+	public ChintooPost getAllData(String postId) {
 		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
-		Connection<Comment> connectionComment = client.fetchConnection(postUniqueId + "/comments", Comment.class,
+		Connection<Comment> connectionComment = client.fetchConnection(postId + "/comments", Comment.class,
 				Parameter.with("limit", 10));
 		ChintooPost chPost = chintooPostRepository.findOne(postUniqueId);
 
@@ -264,7 +258,7 @@ public class service {
 
 		if (null == chPost) {
 			chPost = new ChintooPost();
-			chPost.setId(postUniqueId);
+			chPost.setId(postId);
 			chPost.setMyComments(myCommentList);
 		} else {
 			chPost.getMyComments().addAll(myCommentList);
@@ -285,7 +279,21 @@ public class service {
 	public List<ChintooPost> getReactionByNameAcrossPost(String myReactionName) {
 		return chintooPostRepository.findByMyReactionName(myReactionName);
 	}
+	
+	public List<ChintooPost> getCommentsByNameAcrossPost(String myReactionName) {
+		return chintooPostRepository.findByMyCommentsName(myReactionName);
+	}
 
+
+	public ChintooPost savePost(String postId) {
+		ChintooPost post = chintooPostRepository.findOne(postId);
+		if(null == post){
+			post = new ChintooPost();
+			post.setId(postId);
+		}
+		return chintooPostRepository.save(post);
+	}
+	
 	public String tokenGenerator() {
 		String parsedAccessToken = accessToken;
 
@@ -305,26 +313,6 @@ public class service {
 			this.generatedAcessToken = parsedAccessToken;
 
 		}
-	}
-
-	public String getGeneratedAcessToken() {
-		return generatedAcessToken;
-	}
-
-	public void setGeneratedAcessToken(String generatedAcessToken) {
-		this.generatedAcessToken = generatedAcessToken;
-	}
-
-	public ChintooPost savePost(String postId) {
-		// TODO Auto-generated method stub
-		
-		
-		ChintooPost post = chintooPostRepository.findOne(postId);
-		if(null == post){
-			post = new ChintooPost();
-			post.setId(postId);
-		}
-		return chintooPostRepository.save(post);
 	}
 
 
