@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 import com.chintoo.dao.ChintooPostRepository;
 import com.chintoo.dao.MyCommentsInterface;
 import com.chintoo.dao.MyLikeRepository;
-import com.chintoo.dao.MyPostInterface;
 import com.chintoo.dao.MyReactionRepository;
 import com.chintoo.dao.MyUserRepository;
 import com.chintoo.entity.ChintooPost;
 import com.chintoo.entity.MyComments;
 import com.chintoo.entity.MyLike;
-import com.chintoo.entity.MyPost;
 import com.chintoo.entity.MyReaction;
 import com.chintoo.entity.MyUser;
 
@@ -39,23 +37,6 @@ import com.restfb.types.User;
 @Service
 public class service {
 
-	@Autowired
-	private MyCommentsInterface myCommentsInterface;
-
-	@Autowired
-	private MyPostInterface myPostInterface;
-
-	@Autowired
-	private MyUserRepository myUserRepository;
-
-	@Autowired
-	private MyLikeRepository myLikeRepository;
-
-	@Autowired
-	private MyReactionRepository myReactionRepsoitory;
-
-	@Autowired
-	private ChintooPostRepository chintooPostRepository;
 
 	private String generatedAcessToken;
 
@@ -67,13 +48,10 @@ public class service {
 	private String myAppId;
 	@Value("${fb.myAppSecret}")
 	private String myAppSecret;
-
 	
+	@Autowired
+	private ChintooPostRepository chintooPostRepository;
 
-
-
-
-	
 
 
 	public String tokenGenerator() {
@@ -96,6 +74,36 @@ public class service {
 
 		}
 	}
+	
+	public /*List<ChintooPost>*/ void getFeed(int numberOfPost) {
+		
+		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
+		Connection<Post> postList = client.fetchConnection("me/feed", Post.class, Parameter.with("limit", 1));
+		
+		//List<ChintooPost> chintooPostList = new ArrayList<>();
+		int limit = numberOfPost;
+		for (List<Post> post : postList){
+			for (Post myPost : post ){
+				/*ChintooPost chintooPost = chintooPostRepository.findOne(myPost.getId());
+				if (null == chintooPost){
+					chintooPost.setId(myPost.getId());
+					chintooPostList.add(chintooPostRepository.save(chintooPost));*/
+				System.out.println("POST" + myPost.getId());
+				limit--;
+				
+				if (limit == 0){
+					
+				}
+				
+				}
+			}
+		}
+		
+		//return chintooPostList;
+
+	
+	
+	
 
 
 }

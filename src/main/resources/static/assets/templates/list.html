@@ -4,13 +4,16 @@
         <thead>
         <tr>
             <th>Post Id</th>
-           
+           <th>Post Name</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="post in myPosts">
             <td>
                 {{mySplit(post.id,1)}}
+            </td>
+            <td>
+                {{post.name}}
             </td>
         </tr>
         </tbody>

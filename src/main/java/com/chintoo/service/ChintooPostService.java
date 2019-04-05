@@ -29,6 +29,14 @@ public class ChintooPostService {
 	public ChintooPost getPostById(String Id) {
 		return chintooPostRepository.findOne(Id);
 	}
+	
+	public void deletePostById(String Id) {
+		chintooPostRepository.delete(Id);
+	}
+	
+	public ChintooPost updatePost(String Id, ChintooPost chintooPost){
+		return chintooPostRepository.save(chintooPost);
+	}
 
 
 

@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 import com.chintoo.dao.ChintooPostRepository;
 import com.chintoo.dao.MyCommentsInterface;
 import com.chintoo.dao.MyLikeRepository;
-import com.chintoo.dao.MyPostInterface;
 import com.chintoo.dao.MyReactionRepository;
 import com.chintoo.dao.MyUserRepository;
 import com.chintoo.entity.ChintooPost;
 import com.chintoo.entity.MyComments;
 import com.chintoo.entity.MyLike;
-import com.chintoo.entity.MyPost;
 import com.chintoo.entity.MyUser;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
@@ -45,103 +43,14 @@ public class MyCommentService {
 	private MyCommentsInterface myCommentsInterface;
 
 	@Autowired
-	private MyPostInterface myPostInterface;
-
-	@Autowired
 	private MyUserRepository myUserRepository;
-
-	@Autowired
-	private MyLikeRepository myLikeRepository;
-
-	@Autowired
-	private MyReactionRepository myReactionRepsoitory;
 
 	@Autowired
 	private ChintooPostRepository chintooPostRepository;
 
-	public MyPost getComments()
-
-	{
-		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
-		User me = client.fetchObject("me", User.class);
-		System.out.println(me.getName());
-
-		Post post = client.fetchObject(postUniqueId, Post.class,
-				Parameter.with("fields", "comments{from,message,message_tags},likes,shares"));
-		// System.out.println(post.getComments());
-		Comments comments = post.getComments();
-		List<Comment> commentList = comments.getData(); // juna list
-		List<MyComments> myCommentList = new ArrayList<>(); // navin list
-
-		Likes likes = post.getLikes();
-
-		List<LikeItem> likeItems = likes.getData();
-
-		List<MyLike> myLikes = new ArrayList<>();
-
-		for (LikeItem likeItem : likeItems) {
-			MyLike myLike = new MyLike();
-			MyUser myUser = new MyUser();
-			MyUser existingUser = myUserRepository.findOne(likeItem.getId());
-			if (null != existingUser) {
-				myLike.setUser(existingUser);
-			} else {
-				myUser.setId(likeItem.getId());
-				myUser.setName(likeItem.getName());
-				myLike.setUser(myUserRepository.save(myUser));
-
-			}
-			myLikes.add(myLike);
-		}
-
-		myLikes = (List<MyLike>) myLikeRepository.save(myLikes);
-
-		for (Comment comment : commentList) {
-			MyComments myComment = new MyComments();
-
-			myComment.setId(comment.getId());
-			myComment.setCreatedTime(comment.getCreatedTime());
-			MyUser myUserFrom = new MyUser();
-			MyUser existingUser = myUserRepository.findOne(comment.getId());
-
-			if (null != existingUser) {
-				myComment.setFrom(existingUser);
-			} else {
-				CategorizedFacebookType fromUser = comment.getFrom();
-				myUserFrom.setId(fromUser.getId());
-				myUserFrom.setName(fromUser.getName());
-				myComment.setFrom(myUserRepository.save(myUserFrom));
-				myComment.setMessage(comment.getMessage());
-				myComment.setName(fromUser.getName());
-			}
-
-			List<MessageTag> msgTags = comment.getMessageTags();
-			List<MyUser> myUserTags = new ArrayList<>();
-
-			for (MessageTag messageTag : msgTags) {
-				MyUser myUserTag = new MyUser();
-
-				myUserTag.setId(messageTag.getId());
-				myUserTag.setName(messageTag.getName());
-				myUserTags.add(myUserTag);
-			}
-
-			myComment.setMessageTags((List<MyUser>) myUserRepository.save(myUserTags));
-			myCommentList.add(myComment);
-
-		}
-
-		MyPost myPost = new MyPost();
-		myPost.setId(post.getId());
-		myPost.setComments((List<MyComments>) myCommentsInterface.save(myCommentList));
-		myPost.setLikes(myLikes);
-		myPost.setShares(post.getSharesCount());
-
-		return myPostInterface.save(myPost);
-
-	}
 	
-	public ChintooPost getAllData(String postId) {
+	
+	public ChintooPost getAllComments(String postId) {
 		//getAllReactions(postId);
 		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
 		Connection<Comment> connectionComment = client.fetchConnection(postId + "/comments", Comment.class,

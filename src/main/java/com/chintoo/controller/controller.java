@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import com.chintoo.service.MyReactionService;
 import com.chintoo.service.service;
 
 @RestController
-public class controller {
+public class Controller {
 	
 	@Autowired
 	public service Service;
@@ -29,6 +30,7 @@ public class controller {
 	@Autowired
 	public MyCommentService myCommentsService;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping(method = RequestMethod.GET, value ="/posts")
 	public Iterable<ChintooPost> getPosts()
 	{
@@ -36,22 +38,7 @@ public class controller {
 
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value ="/getAllComments/{postId}")
-	public ChintooPost getAllComments(@PathVariable String postId)
-	{
-		return myCommentsService.getAllData(postId);
-		
-	}
-	
-	@RequestMapping(method = RequestMethod.PUT, value ="/getAllLikes/{postId}")
-	public ChintooPost getAllLikes(@PathVariable String postId)
-	{
-		return myReactionService.getAllReactions(postId);
-		
-	}
-	
-	
-	@RequestMapping(method = RequestMethod.PUT, value ="/savePost/{postId},{postName}")
+	@RequestMapping(method = RequestMethod.POST, value ="/savePost/{postId},{postName}")
 	public ChintooPost savePost(@PathVariable String postId, @PathVariable String postName)
 	{
 		return chintooPostService.savePost(postId, postName);
@@ -64,6 +51,23 @@ public class controller {
 		return chintooPostService.getPostById(Id);
 		
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value ="/deletePostById/{Id}")
+	public String deletePostById(@PathVariable String Id)
+	{
+		chintooPostService.deletePostById(Id);
+		String deleted = "deleted post" + Id;
+		return deleted;
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value="/updatePostById/{Id}")
+	public ChintooPost updatePost(@RequestBody ChintooPost chintooPost, @PathVariable String Id)
+	{
+		return chintooPostService.updatePost(Id, chintooPost);
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/getLikesByUserAcrossPost/{myReactionName}")
 	public List<ChintooPost> getReactsionByNameAcrossPosts(@PathVariable String myReactionName)
@@ -78,6 +82,31 @@ public class controller {
 		return myCommentsService.getCommentsByNameAcrossPost(myReactionName);
 		
 	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(method = RequestMethod.POST, value ="/getAllComments/{postId}")
+	public ChintooPost getAllComments(@PathVariable String postId)
+	{
+		return myCommentsService.getAllComments(postId);
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value ="/getAllLikes/{postId}")
+	public ChintooPost getAllLikes(@PathVariable String postId)
+	{
+		return myReactionService.getAllReactions(postId);
+		
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value="/getFeed/{numberOfPost}")
+	public /*List<ChintooPost>*/ void getFeed(@PathVariable int numberOfPost)
+	{
+		Service.getFeed(numberOfPost);
+	}
+	
+	
 	
 	
 }
