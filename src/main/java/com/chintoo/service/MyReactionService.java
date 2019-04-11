@@ -34,9 +34,9 @@ public class MyReactionService {
 	@Autowired
 	MyUserRepository myUserRepository;
 
-	public ChintooPost getAllReactions(String postId) {
+	public ChintooPost getAllReactions(String postId, String myGeneratedAccessToken) {
 
-		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
+		FacebookClient client = new DefaultFacebookClient(myGeneratedAccessToken, Version.VERSION_3_2);
 		Connection<ReactionItem> connectionReaction = client.fetchConnection(postId + "/reactions", ReactionItem.class);
 
 		ChintooPost chPost = chintooPostRepository.findOne(postId);

@@ -3,6 +3,7 @@ package com.chintoo.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -11,7 +12,7 @@ public class ChintooPost {
 	@javax.persistence.Id
 	private String Id;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<MyReaction> myReaction;
 	
 	@OneToMany

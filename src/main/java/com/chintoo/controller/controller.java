@@ -30,6 +30,7 @@ public class Controller {
 	@Autowired
 	public MyCommentService myCommentsService;
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping(method = RequestMethod.GET, value ="/posts")
 	public Iterable<ChintooPost> getPosts()
@@ -92,21 +93,20 @@ public class Controller {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value ="/getAllLikes/{postId}")
+/*	@RequestMapping(method = RequestMethod.POST, value ="/getAllLikes/{postId}")
 	public ChintooPost getAllLikes(@PathVariable String postId)
 	{
 		return myReactionService.getAllReactions(postId);
 		
 	}
+	*/
 	
-	
-	@RequestMapping(method = RequestMethod.GET, value="/getFeed/{numberOfPost}")
-	public /*List<ChintooPost>*/ void getFeed(@PathVariable int numberOfPost)
+	@RequestMapping(method = RequestMethod.GET, value ="/automated")
+	public void automated()
 	{
-		Service.getFeed(numberOfPost);
+		Service.getPostIds();
+		
 	}
-	
-	
-	
+
 	
 }

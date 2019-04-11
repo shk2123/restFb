@@ -1,10 +1,16 @@
 package com.chintoo.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.chintoo.dao.ChintooPostRepository;
@@ -34,9 +40,13 @@ import com.restfb.types.Post;
 import com.restfb.types.Reactions.ReactionItem;
 import com.restfb.types.User;
 
+@Component
 @Service
 public class service {
+	
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
+	private static final Logger log = LoggerFactory.getLogger(service.class);
 
 	private String generatedAcessToken;
 
@@ -48,62 +58,67 @@ public class service {
 	private String myAppId;
 	@Value("${fb.myAppSecret}")
 	private String myAppSecret;
-	
+
 	@Autowired
 	private ChintooPostRepository chintooPostRepository;
 
+	@Autowired
+	private MyCommentService myCommentService;
+
+	@Autowired
+	private MyReactionService myReactionService;
 
 
-	public String tokenGenerator() {
+
+	//@Scheduled(fixedRate= 60 * 1000 * 1)
+	public void tokenGenerator() {
+		String parsedAccessToken = accessToken;
+		AccessToken accessTokenGenerated = new DefaultFacebookClient(Version.LATEST)
+				.obtainExtendedAccessToken(myAppId, myAppSecret, parsedAccessToken);
+		String delims = "[=\\s+]";
+		String[] parser = accessTokenGenerated.toString().split(delims);
+		parsedAccessToken = parser[1];
+		this.generatedAcessToken = parsedAccessToken;
+		log.info("extended token" + generatedAcessToken);
+
+	}
+
+	@Scheduled(fixedRate= 60 * 1000 * 15)
+	public void getPostIds() {
+
 		String parsedAccessToken = accessToken;
 
-		while (true) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				System.out.println(e);
-			}
+		AccessToken accessTokenGenerated = new DefaultFacebookClient(Version.LATEST)
+				.obtainExtendedAccessToken(myAppId, myAppSecret, parsedAccessToken);
+		String delims = "[=\\s+]";
+		String[] parser = accessTokenGenerated.toString().split(delims);
+		parsedAccessToken = parser[1];
+		this.generatedAcessToken = parsedAccessToken;
+		//log.info("extended token" + generatedAcessToken);
+		Iterable<ChintooPost> chintooPostList = chintooPostRepository.findAll();
 
-			AccessToken accessTokenGenerated = new DefaultFacebookClient(Version.LATEST)
-					.obtainExtendedAccessToken(myAppId, myAppSecret, parsedAccessToken);
-			System.out.println("My extended access token: " + accessTokenGenerated);
-			String delims = "[=\\s+]";
-			String[] parser = accessTokenGenerated.toString().split(delims);
-			parsedAccessToken = parser[1];
-			this.generatedAcessToken = parsedAccessToken;
+		for (ChintooPost chintooPosts : chintooPostList)
+		{
+			String myPostId =chintooPosts.getId();
+
+			/*			System.out.println("************************************************************************************************");
+			System.out.println("fetching comments for postId" + myPostId);
+			myCommentService.getAllComments(myPostId);
+			System.out.println("************************************************************************************************");
+			System.out.println("fetched comments for postId" + myPostId);*/
+			System.out.println("using token : " + accessToken);
+			System.out.println("-------------------------------------------------------------------------------------------------");
+			System.out.println("fetching reactions for postId" + myPostId);
+			myReactionService.getAllReactions(myPostId, accessToken);
+			System.out.println("------------------------------------------------------------------------------------------------..time is" + dateFormat.format(new Date()));
+			System.out.println("fetched reactions for postId" + myPostId);
 
 		}
+
+
 	}
-	
-	public /*List<ChintooPost>*/ void getFeed(int numberOfPost) {
-		
-		FacebookClient client = new DefaultFacebookClient(accessToken, Version.VERSION_3_2);
-		Connection<Post> postList = client.fetchConnection("me/feed", Post.class, Parameter.with("limit", 1));
-		
-		//List<ChintooPost> chintooPostList = new ArrayList<>();
-		int limit = numberOfPost;
-		for (List<Post> post : postList){
-			for (Post myPost : post ){
-				/*ChintooPost chintooPost = chintooPostRepository.findOne(myPost.getId());
-				if (null == chintooPost){
-					chintooPost.setId(myPost.getId());
-					chintooPostList.add(chintooPostRepository.save(chintooPost));*/
-				System.out.println("POST" + myPost.getId());
-				limit--;
-				
-				if (limit == 0){
-					
-				}
-				
-				}
-			}
-		}
-		
-		//return chintooPostList;
 
-	
-	
-	
+
 
 
 }
