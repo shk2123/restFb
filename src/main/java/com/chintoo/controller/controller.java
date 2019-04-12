@@ -15,6 +15,8 @@ import com.chintoo.service.MyCommentService;
 import com.chintoo.service.MyReactionService;
 import com.chintoo.service.service;
 
+
+@RequestMapping("/chintoo")
 @RestController
 public class Controller {
 	

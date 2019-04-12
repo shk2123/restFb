@@ -23,7 +23,7 @@ function CurrencyController($scope,  $http, $log,$filter) {
 
 		$http({
 			method : 'GET',
-			url : 'posts'
+			url : 'chintoo/posts'
 		}).success(function(data, status) {
 			$scope.posts = data;
 			
@@ -56,7 +56,7 @@ function CurrencyController($scope,  $http, $log,$filter) {
 		
 		$http({
 			method : 'GET',
-			url : 'getLikesByUserAcrossPost/' + $scope.userName
+			url : 'chintoo/getLikesByUserAcrossPost/' + $scope.userName
 		}).success(function(data, status) {
 			$scope.myPosts = data;
 			
@@ -73,7 +73,7 @@ function CurrencyController($scope,  $http, $log,$filter) {
 		
 		$http({
 			method : 'GET',
-			url : 'getCommentsByUserAcrossPost/' + $scope.userNameC
+			url : 'chintoo/getCommentsByUserAcrossPost/' + $scope.userNameC
 		}).success(function(data, status) {
 			$scope.myPosts = data;
 			

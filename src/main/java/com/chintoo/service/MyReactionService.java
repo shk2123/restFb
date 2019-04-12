@@ -2,6 +2,7 @@ package com.chintoo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,4 +88,5 @@ public class MyReactionService {
 	public List<ChintooPost> getReactionByNameAcrossPost(String myReactionName) {
 		return chintooPostRepository.findByMyReactionName(myReactionName);
 	}
+	
 }

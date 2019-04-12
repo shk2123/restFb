@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,56 +70,45 @@ public class service {
 	private MyReactionService myReactionService;
 
 
-
-	//@Scheduled(fixedRate= 60 * 1000 * 1)
-	public void tokenGenerator() {
-		String parsedAccessToken = accessToken;
-		AccessToken accessTokenGenerated = new DefaultFacebookClient(Version.LATEST)
-				.obtainExtendedAccessToken(myAppId, myAppSecret, parsedAccessToken);
-		String delims = "[=\\s+]";
-		String[] parser = accessTokenGenerated.toString().split(delims);
-		parsedAccessToken = parser[1];
-		this.generatedAcessToken = parsedAccessToken;
-		log.info("extended token" + generatedAcessToken);
-
-	}
-
 	@Scheduled(fixedRate= 60 * 1000 * 15)
 	public void getPostIds() {
 
-		String parsedAccessToken = accessToken;
-
-		AccessToken accessTokenGenerated = new DefaultFacebookClient(Version.LATEST)
-				.obtainExtendedAccessToken(myAppId, myAppSecret, parsedAccessToken);
-		String delims = "[=\\s+]";
-		String[] parser = accessTokenGenerated.toString().split(delims);
-		parsedAccessToken = parser[1];
-		this.generatedAcessToken = parsedAccessToken;
-		//log.info("extended token" + generatedAcessToken);
 		Iterable<ChintooPost> chintooPostList = chintooPostRepository.findAll();
-
+		
 		for (ChintooPost chintooPosts : chintooPostList)
 		{
 			String myPostId =chintooPosts.getId();
-
-			/*			System.out.println("************************************************************************************************");
-			System.out.println("fetching comments for postId" + myPostId);
-			myCommentService.getAllComments(myPostId);
-			System.out.println("************************************************************************************************");
-			System.out.println("fetched comments for postId" + myPostId);*/
-			System.out.println("using token : " + accessToken);
+			
 			System.out.println("-------------------------------------------------------------------------------------------------");
 			System.out.println("fetching reactions for postId" + myPostId);
 			myReactionService.getAllReactions(myPostId, accessToken);
 			System.out.println("------------------------------------------------------------------------------------------------..time is" + dateFormat.format(new Date()));
 			System.out.println("fetched reactions for postId" + myPostId);
-
+			
 		}
-
-
 	}
-
-
-
-
+	
+	public String generateOtp() {
+		String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+        String Small_chars = "abcdefghijklmnopqrstuvwxyz"; 
+        String numbers = "0123456789"; 
+        String symbols = "!@#$%^&*_=+-/.?<>)";
+		
+        String values = Capital_chars + Small_chars + 
+                numbers + symbols;
+        
+        Random rndm_method = new Random(); 
+        
+        char[] password = new char[6]; 
+  
+        for (int i = 0; i < 6; i++) 
+        { 
+            password[i] = 
+              values.charAt(rndm_method.nextInt(values.length())); 
+        } 
+		
+        return password.toString();
+	}
+	
+	
 }
