@@ -3,6 +3,7 @@ package com.chintoo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,8 @@ import com.chintoo.service.service;
 
 @RequestMapping("/chintoo")
 @RestController
+
+
 public class Controller {
 	
 	@Autowired
@@ -31,6 +34,9 @@ public class Controller {
 	
 	@Autowired
 	public MyCommentService myCommentsService;
+	
+	@Value("${fb.accessToken}")
+	private String accessToken;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +85,13 @@ public class Controller {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value ="/statusForOtp/{myReactionName}")
+	public Boolean getStatusForOtp(@PathVariable String myReactionName)
+	{
+		return myReactionService.statusForOtp(myReactionName);
+		
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value ="/getCommentsByUserAcrossPost/{myReactionName}")
 	public List<ChintooPost> getCommentsByNameAcrossPosts(@PathVariable String myReactionName)
 	{
@@ -95,13 +108,13 @@ public class Controller {
 		
 	}
 	
-/*	@RequestMapping(method = RequestMethod.POST, value ="/getAllLikes/{postId}")
+    @RequestMapping(method = RequestMethod.POST, value ="/getAllLikes/{postId}")
 	public ChintooPost getAllLikes(@PathVariable String postId)
 	{
-		return myReactionService.getAllReactions(postId);
+		return myReactionService.getAllReactions(postId, accessToken);
 		
 	}
-	*/
+	
 	
 	@RequestMapping(method = RequestMethod.GET, value ="/automated")
 	public void automated()
@@ -109,6 +122,23 @@ public class Controller {
 		Service.getPostIds();
 		
 	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@RequestMapping(method = RequestMethod.GET, value ="/getOtp")
+	public String generateOtp()
+	{
+		return Service.generateOtp();
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value ="/getOtp/{myOtp}")
+	public String findOtp(@PathVariable String myOtp)
+	{
+		return Service.findOtp(myOtp);
+		
+	}
+	
+	
 
 	
 }

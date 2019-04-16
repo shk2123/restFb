@@ -5,11 +5,12 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Id;
 
 @Entity
 public class ChintooPost {
 
-	@javax.persistence.Id
+	@Id
 	private String Id;
 	
 	@OneToMany(fetch = FetchType.EAGER)

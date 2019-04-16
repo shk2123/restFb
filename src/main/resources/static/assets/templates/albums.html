@@ -18,9 +18,11 @@
         <input type="button" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" ng-click="getCommentsPostsByName()" id="button-click" value="Get My Commented Posts "/> 
         
 </div>
-<div class="row ">
+<div class="row" ng-if="myPosts.length > 0">
 		<div ng-include src="listView"></div>
 	</div>
 
+<div class ="row">
+ {{myOtp}}
 
 </div>

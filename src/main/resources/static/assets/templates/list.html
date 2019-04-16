@@ -14,7 +14,16 @@
             </td>
             <td>
                 {{post.name}}
+                <!-- {{myPosts.length}} -->
             </td>
         </tr>
         </tbody>
+        </table>
+        
+        <div ng-if="isAllLiked">
+        	 <input type="submit" ng-disabled="isDisabled" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" ng-click="getOtp()" id="button-click" value="Get My OTP "/>
+        </div>
+        
+        
+        
 </div>

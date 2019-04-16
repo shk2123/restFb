@@ -22,16 +22,16 @@ import com.restfb.types.Reactions.ReactionItem;
 
 @Service
 public class MyReactionService {
-	
+
 	@Value("${fb.accessToken}")
 	private String accessToken;
-	
+
 	@Autowired
 	ChintooPostRepository chintooPostRepository;
-	
+
 	@Autowired
 	MyReactionRepository myReactionRepository;
-	
+
 	@Autowired
 	MyUserRepository myUserRepository;
 
@@ -80,7 +80,7 @@ public class MyReactionService {
 
 		return chintooPostRepository.save(chPost);
 	}
-	
+
 	public List<MyReaction> getReactionByName(String name) {
 		return myReactionRepository.findByNameContainingIgnoreCase(name);
 	}
@@ -88,5 +88,15 @@ public class MyReactionService {
 	public List<ChintooPost> getReactionByNameAcrossPost(String myReactionName) {
 		return chintooPostRepository.findByMyReactionName(myReactionName);
 	}
-	
+
+	public boolean statusForOtp(String myReactionName){
+		int sizeOfList = chintooPostRepository.findByMyReactionName(myReactionName).size();
+
+		if (sizeOfList >= 1)
+		{return true;}
+		else
+		{return false;}
+
+	}
+
 }
