@@ -117,6 +117,24 @@ function CurrencyController($scope,  $http, $log,$filter) {
 
 
 	}
+	
+	$scope.getOtpFromDb = function () {
+		
+		alert("hello");
+
+
+		$http({
+			method : 'GET',
+			url : 'chintoo/getOtpStatus/' + $scope.myGeneratedOtp
+		}).success(function(data, status) {
+			$scope.otpResult = data;
+		}).error(function(data, status, headers, config) {
+			$log.warn(status);
+			alert(data);
+		});
+
+
+	}
 
 
 }

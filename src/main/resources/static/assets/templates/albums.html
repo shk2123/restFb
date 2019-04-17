@@ -25,4 +25,19 @@
 <div class ="row">
  {{myOtp}}
 
+
+
+			<div class="row">
+				<input type="text" class="w3-input w3-border" id="exampleInput"
+					name="myGeneratedOtp" ng-model="myGeneratedOtp"
+					placeholder="Please enter your otp" required /> 
+					
+				<input
+					type="button"
+					class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" ng-click="getOtpFromDb()" id="verify-button" value="Verify My OTP" />
+
+			</div>
+			
+			
+			<div class="row">{{otpResult}}</div>
 </div>

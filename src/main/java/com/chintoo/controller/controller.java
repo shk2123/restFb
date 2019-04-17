@@ -131,7 +131,7 @@ public class Controller {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/getOtp/{myOtp}")
+	@RequestMapping(method = RequestMethod.GET, value ="/getOtpStatus/{myOtp}")
 	public String findOtp(@PathVariable String myOtp)
 	{
 		return Service.findOtp(myOtp);
