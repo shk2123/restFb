@@ -1,6 +1,6 @@
 angular.module('currencies', [ 'ui.bootstrap' ])
 
-function CurrencyController($scope,  $http, $log,$filter) {
+function CurrencyController($scope, $location, $http, $log, $filter) {
 
 	/*$scope.myPosts = [{ "id": 2128495817206205}, {"id": 2161100163945770 }, {"id":  2128494830539637 }, {"id":  2161098220612631} ,{"id":   2128493807206406 }];*/
 
@@ -93,13 +93,14 @@ function CurrencyController($scope,  $http, $log,$filter) {
 	}
 
 
-
-	/*$scope.getOtp = function () {
-		$scope.myOtp = "Akrur-OTP";
+/*
+	$scope.payOffline = function () {
+		$scope.address = "Akrur-OTP";
 		$scope.isOtpGenerated = true;
 	}*/
 
 	$scope.isDisabled = false;
+	$scope.isDisabledForPayment = true;
 	$scope.getOtp = function () {
 
 
@@ -109,6 +110,7 @@ function CurrencyController($scope,  $http, $log,$filter) {
 		}).success(function(data, status) {
 			$scope.myOtp = data;
 			$scope.isOtpGenerated = true;
+			$scope.isDisabledForPayment = false;
 			$scope.isDisabled = true;
 		}).error(function(data, status, headers, config) {
 			$log.warn(status);
@@ -133,6 +135,30 @@ function CurrencyController($scope,  $http, $log,$filter) {
 			alert(data);
 		});
 
+
+	}
+	
+	$scope.saveMyNumber = function () {
+		
+		alert("hello");
+
+
+		$http({
+			method : 'GET',
+			url : 'chintoo/saveNumber/' + $scope.myNumber
+		}).success(function(data, status) {
+			$scope.saveNumberReturned = data;
+		}).error(function(data, status, headers, config) {
+			$log.warn(status);
+			alert(data);
+		});
+
+
+	}
+	
+	
+	$scope.goLogin = function () {
+		 $location.url('https://www.instamojo.com/@shubhankark/lf1f021105ac94f05bb7f5ba914d97928/');
 
 	}
 

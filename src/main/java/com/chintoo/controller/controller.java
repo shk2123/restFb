@@ -138,6 +138,13 @@ public class Controller {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value ="/saveNumber/{nyNumber}")
+	public String savrNumber(@PathVariable String nyNumber)
+	{
+		return Service.saveNumber(nyNumber);
+		
+	}
+	
 	
 
 	

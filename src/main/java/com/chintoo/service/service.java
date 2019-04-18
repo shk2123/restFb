@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.chintoo.dao.ChintooPostRepository;
+import com.chintoo.dao.MyNumberRepository;
 import com.chintoo.dao.MyOtpRepository;
 import com.chintoo.entity.ChintooPost;
+import com.chintoo.entity.MyNumber;
 import com.chintoo.entity.MyOtp;
 
 
@@ -45,6 +47,9 @@ public class service {
 
 	@Autowired
 	private MyOtpRepository myOtpRepository;
+	
+	@Autowired
+	private MyNumberRepository myNumberRepository;
 
 
 	@Scheduled(fixedRate= 60 * 1000 * 15)
@@ -111,6 +116,12 @@ public class service {
 			String noOtp = "OTP doesnt exists";
 			return noOtp;
 		}
+	}
+	
+	public String saveNumber(String nyNumber) {
+		MyNumber myNumber = new MyNumber();
+		myNumber.setMynumber(nyNumber);
+		return "saved number" +  myNumberRepository.save(myNumber);
 	}
 
 
